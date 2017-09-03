@@ -9,6 +9,7 @@ var express = require('express'),
 
 // Mongoose instance connection URL
 mongoose.Promise = global.Promise;
+Console.log(Private.MONGO_DB);
 mongoose.connect('mongodb://' + Private.MONGO_DB, {
 	useMongoClient: true
 });

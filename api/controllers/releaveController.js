@@ -2,7 +2,7 @@
 var mongoose = require('mongoose'),
 	User = mongoose.model('Users'),
 	Restroom = mongoose.model('Restrooms'),
-	Private = require('../../private_strings');
+	private = require('../../private_strings');
 
 // This function ensures the client making a request has authorized access
 exports.check_api_key = function(req, res) {
@@ -11,7 +11,7 @@ exports.check_api_key = function(req, res) {
 		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key must be provided' });
 	} else if (req.query.api_key !== Private.API_KEY) {
 		// Invalid API key sent
-		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key does not match server API key, ' + Private.API_KEY });
+		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key does not match server API key, ' + private.API_KEY + ", " + private});
 	}
 };
 
