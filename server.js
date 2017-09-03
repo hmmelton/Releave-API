@@ -4,13 +4,13 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	User = require('./api/models/userModel'), // User model loading
 	Restroom = require('./api/models/restroomModel'), // Restroom model loading
-	Private = require('./private_strings'),
+	Strings = require('./private_strings'),
 	bodyParser = require('body-parser');
 
 // Mongoose instance connection URL
 mongoose.Promise = global.Promise;
-console.log(Private.MONGO_DB);
-mongoose.connect('mongodb://' + Private.MONGO_DB, {
+console.log(Strings.MONGO_DB);
+mongoose.connect('mongodb://' + Strings.MONGO_DB, {
 	useMongoClient: true
 });
 
