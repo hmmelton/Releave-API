@@ -43,6 +43,8 @@ var login = function(req, res) {
 var create_user = function(req, res) {
 	// If user is null, create a new user
 	var new_user = new User(req.body);
+	console.log(req.body);
+	console.log(new_user);
 	new_user.save(function(err, user) {
 		// Handle error
 		if (err) res.status(500).send(err);
