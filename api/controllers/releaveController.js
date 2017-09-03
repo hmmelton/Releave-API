@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 	Strings = require('../../private_strings');
 
 // This function ensures the client making a request has authorized access
-exports.check_api_key = function(req, res, next) {
+var check_api_key = function(req, res, next) {
 	if (!req.query.api_key) {
 		// API key was not sent
 		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key must be provided' });
@@ -19,7 +19,7 @@ exports.check_api_key = function(req, res, next) {
 };
 
 // This function logs in a user
-exports.login = function(req, res) {
+var login = function(req, res) {
 	// Make sure fb_id parameter has been passed
 	if (!req.query.fb_id) res.status(401).json({ error: 'Query parameter fb_id is required.' });
 
@@ -37,7 +37,7 @@ exports.login = function(req, res) {
 };
 
 // This function creates a user
-exports.create_user = function(req, res) {
+var create_user = function(req, res) {
 	// If user is null, create a new user
 	var new_user = new User(req.body);
 	new_user.save(function(err, user) {
@@ -46,4 +46,10 @@ exports.create_user = function(req, res) {
 
 		res.status(201).json(user);
 	});
+};
+
+module.exports = {
+	check_api_key: check_api_key,
+	login: login,
+	create_user: create_user
 };
