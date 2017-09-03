@@ -22,7 +22,7 @@ var UserSchema = new Schema({
 	email: {
 		type: String,
 		default: null
-	}
+	},
 	paid: {
 		type: Boolean,
 		default: false
