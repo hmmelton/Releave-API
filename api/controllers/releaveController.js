@@ -29,7 +29,7 @@ exports.login = function(req, res) {
 		if (err) res.status(500).send(err);
 
 		// If user is null, create new one
-		if (user === null) create_user(req, res);
+		if (user === null) this.create_user(req, res);
 
 		// If user was found, return data
 		res.status(200).json(user);
