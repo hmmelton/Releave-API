@@ -1,6 +1,6 @@
-'use strict'
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
+'use strict';
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
 	created_date: {
@@ -8,13 +8,16 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
 	id: {
-		type: Number
+		type: Number,
+		default: null
 	},
 	first_name: {
-		type: String
+		type: String,
+		default: null
 	},
 	last_name: {
-		type: String
+		type: String,
+		default: null
 	},
 	paid: {
 		type: Boolean,
@@ -28,6 +31,6 @@ var UserSchema = new Schema({
 		type: String,
 		default: null
 	}
-})
+});
 
-module.exports = mongoose.model('Users', UserSchema)
+module.exports = mongoose.model('Users', UserSchema);
