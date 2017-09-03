@@ -188,8 +188,10 @@ module.exports = {
 	login: login,
 	get_user: get_user,
 	create_user: create_user,
+	update_user: update_user,
 	delete_user: delete_user,
 	get_restroom: get_restroom,
 	create_restroom: create_restroom,
+	update_restroom: update_restroom,
 	delete_restroom: delete_restroom
 };
