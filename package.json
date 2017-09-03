@@ -1,0 +1,30 @@
+{
+  "name": "releave-api",
+  "version": "1.0.0",
+  "description": "Releave RESTful API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hmmelton/Releave-API.git"
+  },
+  "keywords": [
+    "RESTful",
+    "API"
+  ],
+  "author": "Harrison Melton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hmmelton/Releave-API/issues"
+  },
+  "homepage": "https://github.com/hmmelton/Releave-API#readme",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "express": "^4.15.4",
+    "mongoose": "^4.11.9"
+  }
+}
