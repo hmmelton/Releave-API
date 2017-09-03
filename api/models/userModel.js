@@ -7,10 +7,6 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	id: {
-		type: Number,
-		default: null
-	},
 	facebook_id: {
 		type: String,
 		default: null

@@ -7,10 +7,6 @@ var RestroomSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	id: {
-		type: Number,
-		default: null
-	},
 	user_id: {
 		type: Number,
 		default: null
