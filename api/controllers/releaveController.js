@@ -42,7 +42,7 @@ var login = function(req, res) {
 // This function creates a user
 var create_user = function(req, res) {
 	// If user is null, create a new user
-	res.status(202).json(req.body);
+	res.status(202).json(new User(req.body));
 	/*
 	var new_user = new User(req.body);
 	new_user.save(function(err, user) {
