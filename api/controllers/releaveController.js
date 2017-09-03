@@ -2,7 +2,8 @@
 var mongoose = require('mongoose'),
 	User = mongoose.model('Users'),
 	Restroom = mongoose.model('Restrooms'),
-	Strings = require('../../private_strings');
+	Strings = require('../../private_strings'),
+	stripe = require("stripe")(Strings.STRIPE_SECRET_KEY);
 
 // This function ensures the client making a request has authorized access
 var check_api_key = function(req, res, next) {
@@ -50,6 +51,33 @@ var login = function(req, res) {
 			res.status(200).json(user);
 		}
 	});
+};
+
+// This function makes a charge to a card
+//
+// TEST FUNCTION
+//
+var create_charge = function(req, res) {
+	if (!req.query.stripe_token) {
+		// Stripe token was not passed - send error to client
+		res.status(400).json({ error: 'Query parameter stripe_token is required' });
+	} else {
+		var token = req.query.stripe_token;
+
+		// Charge card
+		stripe.charges.create({
+			amount: 1000,
+			currency: "usd",
+			description: "test charge",
+			source: token
+		}, function(err, charge) {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.status(200).json(charge);
+			}
+		});
+	}
 };
 
 /*
@@ -186,6 +214,7 @@ module.exports = {
 	check_api_key: check_api_key,
 	check_for_id: check_for_id,
 	login: login,
+	create_charge: create_charge,
 	get_user: get_user,
 	create_user: create_user,
 	update_user: update_user,

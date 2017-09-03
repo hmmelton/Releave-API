@@ -2,6 +2,7 @@
 module.exports = function(app) {
 	var controller = require('../controllers/releaveController');
 
+	// Global routes
 	app.route('*')
 		.all(controller.check_api_key);
 
@@ -13,6 +14,10 @@ module.exports = function(app) {
 	// Login route
 	app.route('/login')
 		.post(controller.login);
+
+	// Stripe route
+	app.route('/charge')
+		.post(controller.create_charge);
 
 	// User routes
 	app.route('/users')
