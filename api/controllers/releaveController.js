@@ -82,7 +82,7 @@ var create_user = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// User was created - return to client
-			res.status(201).json(user);
+			res.status(201).json({ message: 'User successfully created' });
 		}
 	});
 };
@@ -95,7 +95,7 @@ var update_user = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// User was updated - return to client
-			res.status(200).json(user);
+			res.status(200).json({ message: 'User successfully updated' });
 		}
 	});
 };
@@ -147,7 +147,7 @@ var create_restroom = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// Restroom was created - return to client
-			res.status(201).json(restroom);
+			res.status(201).json({ message: 'Restroom successfully created' });
 		}
 	});
 };
@@ -160,7 +160,7 @@ var update_restroom = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// Restroom was updated - return to client
-			res.status(200).json(restroom);
+			res.status(200).json({ message: 'Restroom successfully updated' });
 		}
 	});
 };
