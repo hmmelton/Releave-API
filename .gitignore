@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Custom files
-supplementary/private_strings.js
+private_strings.js
 
 # Runtime data
 pids
