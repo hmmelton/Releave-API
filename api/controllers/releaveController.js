@@ -1,12 +1,20 @@
 "use strict";
 var mongoose = require('mongoose'),
 	User = mongoose.model('Users'),
-	Restroom = mongoose.model('Restroom'),
+	Restroom = mongoose.model('Restrooms'),
 	Private = require('../../private_strings');
 
-exports.login = function(req, res) {
-	if (req.query.api_key !== Private.API_KEY) {
-		// API was not sent, or an invalid one was sent
-		res.status(401).json({ error: 'Unauthorized access. Request must contain api_key parameter' });
+// This function ensures the client making a request has authorized access
+exports.check_api_key = function(req, res) {
+	if (!req.query.api_key) {
+		// API key was not sent
+		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key must be provided' });
+	} else if (req.query.api_key !== Private.API_KEY) {
+		// Invalid API key sent
+		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key does not match server API key, ' + Private.API_KEY });
 	}
+};
+
+exports.login = function(req, res) {
+	 res.status(200).json({ message: 'logged in' });
 };

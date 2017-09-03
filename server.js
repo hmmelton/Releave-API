@@ -9,7 +9,9 @@ var express = require('express'),
 
 // Mongoose instance connection URL
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://' + Private.MONGO_DB);
+mongoose.connect('mongodb://' + Private.MONGO_DB, {
+	useMongoClient: true
+});
 
 app.use(bodyParser.urlencoded({ extended: true })); // Body parser for URL-encoded forms
 app.use(bodyParser.json()); // Body parser for JSON
