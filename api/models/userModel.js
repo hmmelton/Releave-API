@@ -11,6 +11,10 @@ var UserSchema = new Schema({
 		type: Number,
 		default: null
 	},
+	facebook_id: {
+		type: String,
+		default: null
+	},
 	first_name: {
 		type: String,
 		default: null
