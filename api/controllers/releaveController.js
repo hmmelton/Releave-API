@@ -30,6 +30,8 @@ exports.login = function(req, res) {
 		// There was an error
 		if (err) res.status(404).send(err);
 
+		if (user === null) res.status(404).json({ error: 'User not found' });
+		
 		res.status(200).json(user);
 	});
 };
