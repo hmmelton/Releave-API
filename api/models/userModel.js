@@ -19,6 +19,10 @@ var UserSchema = new Schema({
 		type: String,
 		default: null
 	},
+	email: {
+		type: String,
+		default: null
+	}
 	paid: {
 		type: Boolean,
 		default: false
