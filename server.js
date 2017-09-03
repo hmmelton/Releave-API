@@ -20,5 +20,3 @@ var routes = require('./api/routes/releaveRoutes'); // Importing API routes
 routes(app); // Register the routes
 
 app.listen(port);
-
-console.log('Releave RESTful API server started on port: ' + port);
