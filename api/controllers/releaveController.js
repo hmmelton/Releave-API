@@ -83,6 +83,10 @@ var delete_user = function(req, res) {
 		// If there was an error, send it back to the client
 		if (err) res.status(500).send(err);
 
+		// If user is null, send back error to client
+		if (user === null) res.status(404).json({ error: 'User not found' });
+
+		// User was found and deleted - return to client
 		res.status(200).json({ message: 'User successfully deleted' });
 	});
 }
