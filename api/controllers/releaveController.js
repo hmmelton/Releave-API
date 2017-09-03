@@ -79,7 +79,7 @@ var delete_user = function(req, res) {
 	if (!req.query.id) res.status(400).json({ error: 'Query parameter id is required' });
 
 	// Delete user
-	User.remove({ _id: req.query.id }, function(err, user) {
+	User.findByIdAndRemove(req.query.id, function(err, user) {
 		// If there was an error, send it back to the client
 		if (err) res.status(500).send(err);
 
