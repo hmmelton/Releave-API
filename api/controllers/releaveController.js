@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 	Strings = require('../../private_strings');
 
 // This function ensures the client making a request has authorized access
-exports.check_api_key = function(req, res) {
+exports.check_api_key = function(req, res, next) {
 	if (!req.query.api_key) {
 		// API key was not sent
 		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key must be provided' });
