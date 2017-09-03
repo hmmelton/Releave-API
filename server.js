@@ -9,7 +9,6 @@ var express = require('express'),
 
 // Mongoose instance connection URL
 mongoose.Promise = global.Promise;
-console.log(Strings.MONGO_DB);
 mongoose.connect('mongodb://' + Strings.MONGO_DB, {
 	useMongoClient: true
 });
