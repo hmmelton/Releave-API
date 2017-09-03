@@ -11,7 +11,7 @@ exports.check_api_key = function(req, res) {
 		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key must be provided' });
 	} else if (req.query.api_key !== Strings.API_KEY) {
 		// Invalid API key sent
-		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key does not match server API key, ' + Strings.API_KEY + ", " + private});
+		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key does not match server API key, ' + Strings.API_KEY });
 	}
 };
 
