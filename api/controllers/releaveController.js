@@ -42,15 +42,15 @@ var login = function(req, res) {
 // This function creates a user
 var create_user = function(req, res) {
 	// If user is null, create a new user
+	res.status(202).json(req.body);
+	/*
 	var new_user = new User(req.body);
-	console.log(req.body);
-	console.log(new_user);
 	new_user.save(function(err, user) {
 		// Handle error
 		if (err) res.status(500).send(err);
 
 		res.status(201).json(user);
-	});
+	});*/
 };
 
 module.exports = {
