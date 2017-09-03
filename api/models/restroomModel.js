@@ -8,7 +8,7 @@ var RestroomSchema = new Schema({
 		default: Date.now
 	},
 	user_id: {
-		type: Number,
+		type: String,
 		default: null
 	},
 	lat: {
