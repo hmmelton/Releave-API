@@ -105,10 +105,77 @@ var delete_user = function(req, res) {
 	});
 }
 
+/*
+ * RESTROOM FUNCTIONS
+ */
+
+// This function fetches a restroom
+var get_restroom = function(req, res) {
+	// Make sure id parameter has been passed
+	if (!req.query.id) {
+		res.status(400).json({ error: 'Query parameter id is required' });
+		return;
+	}
+
+	// Find restroom with matching ID
+	Restroom.findById(req.query.id, function(err, restroom) {
+		if (err) {
+			// If there was an error, send it back to the client
+			res.status(500).send(err);
+		} else if (restroom === null) {
+			// If restroom is null, send back error to client
+			res.status(404).json({ error: 'Restroom not found' });
+		} else {
+			// Restroom was found - return to client
+			res.status(200).send(restroom);
+		}
+	});
+};
+
+// This function creates a restroom
+var create_restroom = function(req, res) {
+	var new_restroom = new Restroom(req.body);
+	new_restroom.save(function(err, restroom) {
+		// If there was an error, send it back to the client
+		if (err) {
+			res.status(500).send(err);
+		} else {
+			// Restroom was created - return to client
+			res.status(201).json(restroom);
+		}
+	});
+};
+
+// This function deletes a restroom
+var delete_restroom = function(req, res) {
+	// Make sure id parameter has been passed
+	if (!req.query.id) {
+		res.status(400).json({ error: 'Query parameter id is required' });
+		return;
+	}
+
+	// Delete restroom
+	Restroom.findByIdAndRemove(req.query.id, function(err, restroom) {
+		if (err) {
+			// If there was an error, send it back to the client
+			res.status(500).send(err);
+		} else if (restroom === null) {
+			// If restroom is null, send back error to client
+			res.status(404).json({ error: 'Restroom not found' });
+		} else {
+			// Restroom was found and deleted - return to client
+			res.status(200).json({ message: 'Restroom successfully deleted' });
+		}
+	});
+}
+
 module.exports = {
 	check_api_key: check_api_key,
 	login: login,
 	get_user: get_user,
 	create_user: create_user,
-	delete_user: delete_user
+	delete_user: delete_user,
+	get_restroom: get_restroom,
+	create_restroom: create_restroom,
+	delete_restroom: delete_restroom
 };
