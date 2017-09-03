@@ -25,6 +25,6 @@ module.exports = function(app) {
 	app.route('/restrooms')
 		.get(controller.get_restroom)
 		.post(controller.create_restroom)
-		.put(controller.update_user)
+		.put(controller.update_restroom)
 		.delete(controller.delete_restroom);
 };
