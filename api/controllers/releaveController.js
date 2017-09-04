@@ -61,19 +61,24 @@ var create_charge = function(req, res) {
 	if (!req.query.stripe_token) {
 		// Stripe token was not passed - send error to client
 		res.status(400).json({ error: 'Query parameter stripe_token is required' });
+	} else if (!req.query.amount) {
+		// Amount not specified
+		res.status(400).json({ error: 'Query parameter amount is required' });
 	} else {
 		var token = req.query.stripe_token;
 
 		// Charge card
 		stripe.charges.create({
-			amount: 1000,
+			amount: req.query.amount,
 			currency: "usd",
 			description: "test charge",
 			source: token
 		}, function(err, charge) {
 			if (err) {
+				// There was an error with the charge
 				res.status(500).send(err);
 			} else {
+				// Charge was completed successfully
 				res.status(200).json(charge);
 			}
 		});
@@ -210,6 +215,28 @@ var delete_restroom = function(req, res) {
 	});
 }
 
+// This function gets restrooms in a given area
+var get_area_restrooms = function(req, res) {
+	if (!req.query.min_lat || !req.query.max_lat || !req.query.min_lng || !req.query.max_lng) {
+		// Latitudes and longitudes were not all passed - return error
+		res.status(401).json({ error: 'Query parameters min_lat, max_lat, min_lng, and max_lng must all be passed' });
+	} else {
+		// Find restrooms in the given latitude and longitude ranges
+		Restroom.find({
+			lat: { $gt: req.query.min_lat, $lt: req.query.max_lat },
+			lng: { $gt: req.query.min_lat, $lt: req.query.max_lng }
+		}, function(err, restrooms) {
+			if (err) {
+				// If there was an error, return it to the user
+				res.status(500).send(err);
+			} else {
+				// Query successful - return restrooms to user
+				res.status(200).json(restrooms);
+			}
+		});
+	}
+};
+
 module.exports = {
 	check_api_key: check_api_key,
 	check_for_id: check_for_id,
@@ -222,5 +249,6 @@ module.exports = {
 	get_restroom: get_restroom,
 	create_restroom: create_restroom,
 	update_restroom: update_restroom,
-	delete_restroom: delete_restroom
+	delete_restroom: delete_restroom,
+	get_area_restrooms: get_area_restrooms
 };

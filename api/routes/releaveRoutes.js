@@ -7,7 +7,15 @@ module.exports = function(app) {
 		.all(controller.check_api_key);
 
 	app.route('*')
-		.get(controller.check_for_id)
+		.get(function(req, res, next) {
+			if (req.path !== '/area_restrooms') {
+				// Check for id query param unless the above path is the one used
+				controller.check_for_id;
+			} else {
+				// If '/area_restrooms' is the request path, move on
+				next();
+			}
+		})
 		.put(controller.check_for_id)
 		.delete(controller.check_for_id);
 
@@ -32,4 +40,7 @@ module.exports = function(app) {
 		.post(controller.create_restroom)
 		.put(controller.update_restroom)
 		.delete(controller.delete_restroom);
+
+	app.route('/area_restrooms')
+		.get(controller.get_area_restrooms);
 };
