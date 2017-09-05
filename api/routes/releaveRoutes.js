@@ -10,7 +10,7 @@ module.exports = function(app) {
 		.get(function(req, res, next) {
 			if (req.path !== '/area_restrooms') {
 				// Check for id query param unless the above path is the one used
-				controller.check_for_id();
+				controller.check_for_id(req, res);
 			} else {
 				// If '/area_restrooms' is the request path, move on
 				next();
