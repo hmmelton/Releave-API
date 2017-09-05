@@ -224,7 +224,7 @@ var get_area_restrooms = function(req, res) {
 		// Find restrooms in the given latitude and longitude ranges
 		Restroom.find({
 			lat: { $gt: req.query.min_lat, $lt: req.query.max_lat },
-			//lng: { $gt: req.query.min_lat, $lt: req.query.max_lng }
+			lng: { $gt: req.query.min_lng, $lt: req.query.max_lng }
 		}, function(err, restrooms) {
 			if (err) {
 				// If there was an error, return it to the user
