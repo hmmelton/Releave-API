@@ -7,12 +7,12 @@ var mongoose = require('mongoose'),
 
 // This function ensures the client making a request has authorized access
 var check_api_key = function(req, res, next) {
-	if (!req.query.api_key) {
+	if (!req.get("Authorization")) {
 		// API key was not sent
-		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key must be provided' });
-	} else if (req.query.api_key !== Strings.API_KEY) {
+		res.status(401).json({ error: 'Unauthorized access. Authorization header must be provided' });
+	} else if (req.get("Authorization") !== Strings.API_KEY) {
 		// Invalid API key sent
-		res.status(401).json({ error: 'Unauthorized access. Query parameter api_key does not match server API key' });
+		res.status(401).json({ error: 'Unauthorized access. Authorization header does not match server API key' });
 	} else {
 		// Client is authorized, move on to specific request
 		next();
