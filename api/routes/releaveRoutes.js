@@ -6,7 +6,7 @@ module.exports = function(app) {
 	app.route('*')
 		.all(controller.check_api_key);
 
-	app.route('*')
+	/*app.route('*')
 		.get(function(req, res, next) {
 			if (req.path !== '/area_restrooms') {
 				// Check for id query param unless the above path is the one used
@@ -17,7 +17,7 @@ module.exports = function(app) {
 			}
 		})
 		.put(controller.check_for_id)
-		.delete(controller.check_for_id);
+		.delete(controller.check_for_id);*/
 
 	// Login route
 	app.route('/login')
@@ -28,18 +28,22 @@ module.exports = function(app) {
 		.post(controller.create_charge);
 
 	// User routes
-	app.route('/users')
+	app.route('/users/:id')
 		.get(controller.get_user)
-		.post(controller.create_user)
 		.put(controller.update_user)
 		.delete(controller.delete_user);
 
+	app.route('/users')
+		.post(controller.create_user);
+
 	// Restroom routes
-	app.route('/restrooms')
+	app.route('/restrooms/:id')
 		.get(controller.get_restroom)
-		.post(controller.create_restroom)
 		.put(controller.update_restroom)
 		.delete(controller.delete_restroom);
+
+	app.route('/restrooms')
+		.post(controller.create_restroom);
 
 	app.route('/area_restrooms')
 		.get(controller.get_area_restrooms);
