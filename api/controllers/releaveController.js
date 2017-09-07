@@ -21,7 +21,7 @@ var check_api_key = function(req, res, next) {
 
 // This function checks whether or not an id has been passed
 var check_for_id = function(req, res, next) {
-	if (!req.query.id) {
+	if (!req.params.id) {
 		// ID was not passed - return error to client
 		res.status(400).json({ error: 'Query parameter id is required' });
 	} else {
@@ -39,7 +39,7 @@ var login = function(req, res) {
 	}
 
 	// Find user with matching facbook_id
-	User.findOne({ 'facebook_id': req.query.fb_id }, function(err, user) {
+	User.findOne({ 'facebook_id': req.params.fb_id }, function(err, user) {
 		if (err) {
 			// Handle error
 			res.status(500).send(err);
@@ -92,7 +92,7 @@ var create_charge = function(req, res) {
 // This function fetches a user
 var get_user = function(req, res) {
 	// Find user with matching ID
-	User.findById(req.query.id, function(err, user) {
+	User.findById(req.params.id, function(err, user) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send(err);
@@ -122,7 +122,7 @@ var create_user = function(req, res) {
 
 // This function updates a user
 var update_user = function(req, res) {
-	User.findOneAndUpdate({_id: req.query.id }, req.body, { new: true }, function(err, user) {
+	User.findOneAndUpdate({_id: req.params.id }, req.body, { new: true }, function(err, user) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send(err);
@@ -136,7 +136,7 @@ var update_user = function(req, res) {
 // This function deletes a user
 var delete_user = function(req, res) {
 	// Delete user
-	User.findByIdAndRemove(req.query.id, function(err, user) {
+	User.findByIdAndRemove(req.params.id, function(err, user) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send(err);
@@ -157,7 +157,7 @@ var delete_user = function(req, res) {
 // This function fetches a restroom
 var get_restroom = function(req, res) {
 	// Find restroom with matching ID
-	Restroom.findById(req.query.id, function(err, restroom) {
+	Restroom.findById(req.params.id, function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send(err);
@@ -187,7 +187,7 @@ var create_restroom = function(req, res) {
 
 // This method updates a restroom
 var update_restroom = function(req, res) {
-	Restroom.findOneAndUpdate({_id: req.query.id }, req.body, { new: true }, function(err, restroom) {
+	Restroom.findOneAndUpdate({_id: req.params.id }, req.body, { new: true }, function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send(err);
@@ -201,7 +201,7 @@ var update_restroom = function(req, res) {
 // This function deletes a restroom
 var delete_restroom = function(req, res) {
 	// Delete restroom
-	Restroom.findByIdAndRemove(req.query.id, function(err, restroom) {
+	Restroom.findByIdAndRemove(req.params.id, function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send(err);

@@ -20,7 +20,7 @@ module.exports = function(app) {
 		.delete(controller.check_for_id);*/
 
 	// Login route
-	app.route('/login')
+	app.route('/login/:fb_id')
 		.post(controller.login);
 
 	// Stripe route
