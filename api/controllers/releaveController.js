@@ -117,7 +117,7 @@ var update_user = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// User was updated - return to client
-			res.status(200).json({ message: 'User successfully updated' });
+			res.status(200).json(user);
 		}
 	});
 };
@@ -182,7 +182,7 @@ var update_restroom = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// Restroom was updated - return to client
-			res.status(200).json({ message: 'Restroom successfully updated' });
+			res.status(200).json(restroom);
 		}
 	});
 };
