@@ -8,7 +8,7 @@ module.exports = function(app) {
 
 	// Login route
 	app.route('/login/:fb_id')
-		.post(controller.login);
+		.get(controller.login);
 
 	// Stripe route
 	app.route('/charge')
