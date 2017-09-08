@@ -169,7 +169,6 @@ var create_restroom = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// Restroom was created - return to client
-			
 			res.status(201).json(restroom);
 		}
 	});
@@ -229,7 +228,6 @@ var get_area_restrooms = function(req, res) {
 
 module.exports = {
 	check_api_key: check_api_key,
-	check_for_id: check_for_id,
 	login: login,
 	create_charge: create_charge,
 	get_user: get_user,
