@@ -19,17 +19,6 @@ var check_api_key = function(req, res, next) {
 	}
 };
 
-// This function checks whether or not an id has been passed
-var check_for_id = function(req, res, next) {
-	if (!req.params.id) {
-		// ID was not passed - return error to client
-		res.status(400).json({ error: 'Query parameter id is required' });
-	} else {
-		// ID was passed - move on
-		next();
-	}
-}
-
 // This function logs in a user
 var login = function(req, res) {
 	// Make sure fb_id parameter has been passed
@@ -115,7 +104,7 @@ var create_user = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// User was created - return to client
-			res.status(201).json({ message: 'User successfully created' });
+			res.status(201).json(user);
 		}
 	});
 };
@@ -180,7 +169,7 @@ var create_restroom = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// Restroom was created - return to client
-			res.status(201).json({ message: 'Restroom successfully created' });
+			res.status(201).json(restroom);
 		}
 	});
 };

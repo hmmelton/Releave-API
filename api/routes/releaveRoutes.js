@@ -6,19 +6,6 @@ module.exports = function(app) {
 	app.route('*')
 		.all(controller.check_api_key);
 
-	/*app.route('*')
-		.get(function(req, res, next) {
-			if (req.path !== '/area_restrooms') {
-				// Check for id query param unless the above path is the one used
-				controller.check_for_id(req, res, next);
-			} else {
-				// If '/area_restrooms' is the request path, move on
-				next();
-			}
-		})
-		.put(controller.check_for_id)
-		.delete(controller.check_for_id);*/
-
 	// Login route
 	app.route('/login/:fb_id')
 		.post(controller.login);
