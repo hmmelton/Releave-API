@@ -169,6 +169,7 @@ var create_restroom = function(req, res) {
 			res.status(500).send(err);
 		} else {
 			// Restroom was created - return to client
+			
 			res.status(201).json(restroom);
 		}
 	});
