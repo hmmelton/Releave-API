@@ -22,7 +22,7 @@ var check_api_key = function(req, res, next) {
 // This function logs in a user
 var login = function(req, res) {
 	// Make sure fb_id parameter has been passed
-	if (!req.query.fb_id) {
+	if (!req.params.fb_id) {
 		res.status(400).json({ error: 'Query parameter fb_id is required.' });
 		return;
 	}
