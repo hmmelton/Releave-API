@@ -243,6 +243,34 @@ var check_auth = function(req, res, next) {
 	next();
 };
 
+// This function returns a user, creating a new one if necessary
+var upsert_fb_user = function(req, res, next) {
+	// Find user with matching facbook_id
+	return User.findOne({ 
+		'facebook_provider.id': req.params.id 
+	}, function(err, user) {
+		if (!user) {
+			// If user is null, create new one
+			var newUser = new User(req.body);
+
+			// Save new user
+			newUser.save(function(error, savedUser) {
+				if (error) {
+					// Handle error
+					console.log(error);
+				}
+				req.user = savedUser;
+				return next();
+			});
+		} else if (!err) {
+			// If user was found, return data
+			req.user = user;
+		}
+		// Move on
+		return next();
+	});
+};
+
 var authenticate = express_jwt({
 	secret: strings.TOKEN_GEN_SECRET,
 	requestProperty: 'auth',
@@ -273,34 +301,6 @@ var get_one = function (req, res) {
   delete user['__v'];
 
   res.status(200).json(user);
-};
-
- // This function returns a user, creating a new one if necessary
-var upsert_fb_user = function(req, res, next) {
-	// Find user with matching facbook_id
-	return User.findOne({ 
-		'facebook_provider.id': req.params.id 
-	}, function(err, user) {
-		if (!user) {
-			// If user is null, create new one
-			var newUser = new User(req.body);
-
-			// Save new user
-			newUser.save(function(error, savedUser) {
-				if (error) {
-					// Handle error
-					console.log(error);
-				}
-				req.user = savedUser;
-				next();
-			});
-		} else if (!err) {
-			// If user was found, return data
-			req.user = user;
-		}
-		// Move on
-		next();
-	});
 };
 
 module.exports = {
