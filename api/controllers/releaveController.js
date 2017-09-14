@@ -276,9 +276,11 @@ var authenticate = express_jwt({
 	requestProperty: 'auth',
 	get_token: function(req) {
 		if (req.headers['x-auth-token']) {
+			console.log("\n\nx-auth-token proided\n\n");
 			// Token is valid
 			return req.headers['x-auth-token'];
 		}
+		console.log("\n\nx-auth-token not proided\n\n");
 		// Token is not valid
 		return null;
 	}
@@ -287,10 +289,12 @@ var authenticate = express_jwt({
 var get_current_user = function(req, res, next) {
   User.findById(req.auth.id, function(err, user) {
     if (err) {
-      next(err);
+    	console.log("\n\nerror: %s\n\n", err);
+      	next(err);
     } else {
-      req.user = user;
-      next();
+    	console.log("\n\nNo error\n\n");
+      	req.user = user;
+      	next();
     }
   });
 };
