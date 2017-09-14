@@ -220,7 +220,7 @@ var create_token = function(auth) {
 };
 
 var generate_token = function (req, res, next) {
-  req.token = createToken(req.auth);
+  req.token = create_token(req.auth);
   next();
 };
 
