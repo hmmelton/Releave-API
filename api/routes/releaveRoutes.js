@@ -7,7 +7,7 @@ module.exports = function(app) {
 		.all(controller.check_api_key);
 
 	// Authenticate route
-	app.route('/auth/facebook')
+	app.route('/auth/facebook/:id')
 		.post(controller.upsert_fb_user, 
 			controller.check_auth, 
 			controller.generate_token, 
