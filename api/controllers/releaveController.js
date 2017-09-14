@@ -281,7 +281,6 @@ var upsert_fb_user = function(req, res, next) {
 	return User.findOne({ 
 		'facebook_provider.id': req.params.id 
 	}, function(err, user) {
-
 		if (!user) {
 			// If user is null, create new one
 			var newUser = new User(req.body);
@@ -292,14 +291,15 @@ var upsert_fb_user = function(req, res, next) {
 					// Handle error
 					console.log(error);
 				}
-				req.user = savedUser
-				return next();
+				req.user = savedUser;
+				next();
 			});
-		} else {
+		} else if (!err) {
 			// If user was found, return data
-			req.user = user
-			return next();
+			req.user = user;
 		}
+		// Move on
+		next();
 	});
 };
 
