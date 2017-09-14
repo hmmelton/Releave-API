@@ -247,7 +247,7 @@ var check_auth = function(req, res, next) {
 var upsert_fb_user = function(req, res, next) {
 	// Find user with matching facbook_id
 	return User.findOne({ 
-		'facebook_provider.id': req.params.id 
+		'facebook_id': req.params.id 
 	}, function(err, user) {
 		if (!user) {
 			// If user is null, create new one
