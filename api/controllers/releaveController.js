@@ -265,9 +265,9 @@ var upsert_fb_user = function(req, res, next) {
 		} else if (!err) {
 			// If user was found, return data
 			req.user = user;
+			// Move on
+			return next();
 		}
-		// Move on
-		return next();
 	});
 };
 
