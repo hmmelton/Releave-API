@@ -7,12 +7,12 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	facebook_provider: {
-		type: {
-			id: String,
-			token: String
-		},
+	facebook_id: {
+		type: String
 	},
+	auth_token: {
+		type: String
+	}
 	first_name: {
 		type: String,
 	},
