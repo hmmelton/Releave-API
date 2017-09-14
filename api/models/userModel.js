@@ -12,7 +12,7 @@ var UserSchema = new Schema({
 	},
 	auth_token: {
 		type: String
-	}
+	},
 	first_name: {
 		type: String,
 	},
