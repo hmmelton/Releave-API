@@ -7,13 +7,14 @@ var UserSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	facebook_id: {
-		type: String,
-		default: null
+	facebook_provider: {
+		type: {
+			id: String,
+			token: String
+		},
 	},
 	first_name: {
 		type: String,
-		default: null
 	},
 	last_name: {
 		type: String,
@@ -21,7 +22,6 @@ var UserSchema = new Schema({
 	},
 	email: {
 		type: String,
-		default: null
 	},
 	paid: {
 		type: Boolean,

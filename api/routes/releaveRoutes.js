@@ -6,9 +6,16 @@ module.exports = function(app) {
 	app.route('*')
 		.all(controller.check_api_key);
 
-	// Login route
-	app.route('/login/:fb_id')
-		.post(controller.login);
+	// Authenticate route
+	app.route('/auth/facebook')
+		.post(controller.upsert_fb_user, 
+			controller.check_auth, 
+			controller.generate_token, 
+			controller.send_token);
+
+	// Get current user route
+	app.route('/auth/me')
+		.get(controller.authenticate, controller.get_current_user, controller.get_one);
 
 	// Stripe route
 	app.route('/charge')

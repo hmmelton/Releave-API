@@ -2,44 +2,23 @@
 var mongoose = require('mongoose'),
 	User = mongoose.model('Users'),
 	Restroom = mongoose.model('Restrooms'),
-	Strings = require('../../private_strings'),
-	stripe = require("stripe")(Strings.STRIPE_SECRET_KEY);
+	strings = require('../../private_strings'),
+	stripe = require('stripe')(strings.STRIPE_SECRET_KEY),
+	express_jwt = require('express-jwt'),
+	jwt = require('jsonwebtoken');
 
 // This function ensures the client making a request has authorized access
 var check_api_key = function(req, res, next) {
 	if (!req.get("Authorization")) {
 		// API key was not sent
 		res.status(401).json({ error: 'Unauthorized access. Authorization header must be provided' });
-	} else if (req.get("Authorization") !== Strings.API_KEY) {
+	} else if (req.get("Authorization") !== strings.API_KEY) {
 		// Invalid API key sent
 		res.status(401).json({ error: 'Unauthorized access. Authorization header does not match server API key' });
 	} else {
 		// Client is authorized, move on to specific request
 		next();
 	}
-};
-
-// This function logs in a user
-var login = function(req, res) {
-	// Make sure fb_id parameter has been passed
-	if (!req.params.fb_id) {
-		res.status(400).json({ error: 'Query parameter fb_id is required.' });
-		return;
-	}
-
-	// Find user with matching facbook_id
-	User.findOne({ 'facebook_id': req.params.fb_id }, function(err, user) {
-		if (err) {
-			// Handle error
-			res.status(500).send(err);
-		} else if (user === null) {
-			// If user is null, create new one
-			create_user(req, res);
-		} else {
-			// If user was found, return data
-			res.status(200).json(user);
-		}
-	});
 };
 
 // This function makes a charge to a card
@@ -97,8 +76,8 @@ var get_user = function(req, res) {
 
 // This function creates a user
 var create_user = function(req, res) {
-	var new_user = new User(req.body);
-	new_user.save(function(err, user) {
+	var newUser = new User(req.body);
+	newUser.save(function(err, user) {
 		// If there was an error, send it back to the client
 		if (err) {
 			res.status(500).send(err);
@@ -226,9 +205,106 @@ var get_area_restrooms = function(req, res) {
 	}
 };
 
+/*
+ * AUTH & LOGIN FUNCTIONS
+ */
+
+
+var create_token = function(auth) {
+  return jwt.sign({
+    id: auth.id
+  }, strings.TOKEN_GEN_SECRET,
+  {
+    expiresIn: 60 /* * 60 * 24 * 30 * 6 // ~6 month expiration */
+  });
+};
+
+var generate_token = function (req, res, next) {
+  req.token = createToken(req.auth);
+  next();
+};
+
+var send_token = function (req, res) {
+  res.setHeader('x-auth-token', req.token);
+  res.status(200).send(req.auth);
+};
+
+var check_auth = function(req, res, next) {
+	if (!req.user) {
+		// User is not authenticated - return
+		return res.send(401, "User not authenticated");
+	}
+
+	// Prepare token for API
+	req.auth = {
+		id: req.user.id
+	}
+
+	next();
+};
+
+var authenticate = express_jwt({
+	secret: strings.TOKEN_GEN_SECRET,
+	requestProperty: 'auth',
+	get_token: function(req) {
+		if (req.headers['x-auth-token']) {
+			// Token is valid
+			return req.headers['x-auth-token'];
+		}
+		// Token is not valid
+		return null;
+	}
+});
+
+var get_current_user = function(req, res, next) {
+  User.findById(req.auth.id, function(err, user) {
+    if (err) {
+      next(err);
+    } else {
+      req.user = user;
+      next();
+    }
+  });
+};
+
+var get_one = function (req, res) {
+  var user = req.user.toObject();
+
+  delete user['__v'];
+
+  res.status(200).json(user);
+};
+
+ // This function returns a user, creating a new one if necessary
+var upsert_fb_user = function(req, res, next) {
+	// Find user with matching facbook_id
+	return User.findOne({ 
+		'facebook_provider.id': req.params.id 
+	}, function(err, user) {
+
+		if (!user) {
+			// If user is null, create new one
+			var newUser = new User(req.body);
+
+			// Save new user
+			newUser.save(function(error, savedUser) {
+				if (error) {
+					// Handle error
+					console.log(error);
+				}
+				req.user = savedUser
+				return next();
+			});
+		} else {
+			// If user was found, return data
+			req.user = user
+			return next();
+		}
+	});
+};
+
 module.exports = {
 	check_api_key: check_api_key,
-	login: login,
 	create_charge: create_charge,
 	get_user: get_user,
 	create_user: create_user,
@@ -238,5 +314,13 @@ module.exports = {
 	create_restroom: create_restroom,
 	update_restroom: update_restroom,
 	delete_restroom: delete_restroom,
-	get_area_restrooms: get_area_restrooms
+	get_area_restrooms: get_area_restrooms,
+	upsert_fb_user: upsert_fb_user,
+	create_token: create_token,
+	generate_token: generate_token,
+	send_token: send_token,
+	check_auth: check_auth,
+	authenticate: authenticate,
+	get_current_user: get_current_user,
+	get_one: get_one
 };

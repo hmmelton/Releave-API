@@ -4,14 +4,17 @@ var express = require('express'),
 	mongoose = require('mongoose'),
 	User = require('./api/models/userModel'), // User model loading
 	Restroom = require('./api/models/restroomModel'), // Restroom model loading
-	Strings = require('./private_strings'),
+	passportConfig = require('./passport')
+	strings = require('./private_strings'), // File holding secret strings
 	bodyParser = require('body-parser');
 
 // Mongoose instance connection URL
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://' + Strings.MONGO_DB, {
+mongoose.connect('mongodb://' + strings.MONGO_DB, {
 	useMongoClient: true
 });
+
+passportConfig()
 
 app.use(bodyParser.urlencoded({ extended: true })); // Body parser for URL-encoded forms
 app.use(bodyParser.json()); // Body parser for JSON
