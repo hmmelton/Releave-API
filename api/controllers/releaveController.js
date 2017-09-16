@@ -7,20 +7,6 @@ var mongoose = require('mongoose'),
 	express_jwt = require('express-jwt'),
 	jwt = require('jsonwebtoken');
 
-// This function ensures the client making a request has authorized access
-var check_api_key = function(req, res, next) {
-	if (!req.get("Authorization")) {
-		// API key was not sent
-		res.status(401).json({ error: 'Unauthorized access. Authorization header must be provided' });
-	} else if (req.get("Authorization") !== strings.API_KEY) {
-		// Invalid API key sent
-		res.status(401).json({ error: 'Unauthorized access. Authorization header does not match server API key' });
-	} else {
-		// Client is authorized, move on to specific request
-		next();
-	}
-};
-
 // This function makes a charge to a card
 //
 // TEST FUNCTION
@@ -209,13 +195,35 @@ var get_area_restrooms = function(req, res) {
  * AUTH & LOGIN FUNCTIONS
  */
 
+// This function verifies an authorization token passed to each request as a header.
+var authenticate = express_jwt({
+	secret: strings.TOKEN_GEN_SECRET,
+	requestProperty: 'auth',
+	get_token: function(req) {
+		if (req.get('Authorization')) {
+			// Token is valid
+			return req.get("Authorization");
+		}
+		// Token is not valid
+		return null;
+	}
+}).unless({ path: [/^\/auth\/facebook\/.*/] }); // Login endpoint is only that does not not require an auth token
+
+// If there was an error with the auth token, send it back to the client.
+var handle_auth_error = function(err, req, res, next) {
+	if(err.name === 'UnauthorizedError') {
+		res.status(401).send({ error: err.message });
+	 	return;
+	}
+	next();
+}
 
 var create_token = function(auth) {
   return jwt.sign({
     id: auth.id
   }, strings.TOKEN_GEN_SECRET,
   {
-    expiresIn: 60 /* * 60 * 24 * 30 * 6 // ~6 month expiration */
+    expiresIn: 60 * 60 * 24 * 30 * 6 // ~6 month expiration
   });
 };
 
@@ -225,7 +233,7 @@ var generate_token = function (req, res, next) {
 };
 
 var send_token = function (req, res) {
-  res.setHeader('x-auth-token', req.token);
+  res.setHeader('Authorization', req.token);
   res.status(200).send(req.auth);
 };
 
@@ -271,28 +279,11 @@ var upsert_fb_user = function(req, res, next) {
 	});
 };
 
-var authenticate = express_jwt({
-	secret: strings.TOKEN_GEN_SECRET,
-	requestProperty: 'auth',
-	get_token: function(req) {
-		if (req.headers['x-auth-token']) {
-			console.log("\n\nx-auth-token proided\n\n");
-			// Token is valid
-			return req.headers['x-auth-token'];
-		}
-		console.log("\n\nx-auth-token not proided\n\n");
-		// Token is not valid
-		return null;
-	}
-});
-
 var get_current_user = function(req, res, next) {
   User.findById(req.auth.id, function(err, user) {
     if (err) {
-    	console.log("\n\nerror: %s\n\n", err);
       	next(err);
     } else {
-    	console.log("\n\nNo error\n\n");
       	req.user = user;
       	next();
     }
@@ -308,7 +299,6 @@ var get_one = function (req, res) {
 };
 
 module.exports = {
-	check_api_key: check_api_key,
 	create_charge: create_charge,
 	get_user: get_user,
 	create_user: create_user,
@@ -319,12 +309,13 @@ module.exports = {
 	update_restroom: update_restroom,
 	delete_restroom: delete_restroom,
 	get_area_restrooms: get_area_restrooms,
+	authenticate: authenticate,
+	handle_auth_error: handle_auth_error,
 	upsert_fb_user: upsert_fb_user,
 	create_token: create_token,
 	generate_token: generate_token,
 	send_token: send_token,
 	check_auth: check_auth,
-	authenticate: authenticate,
 	get_current_user: get_current_user,
 	get_one: get_one
 };

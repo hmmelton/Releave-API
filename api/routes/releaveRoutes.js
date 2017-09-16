@@ -1,10 +1,12 @@
 "use strict";
 module.exports = function(app) {
-	var controller = require('../controllers/releaveController');
+	var controller = require('../controllers/releaveController'),
+	strings = require('../../private_strings'),
+	express_jwt = require('express-jwt');
 
 	// Global routes
-	app.route('*')
-		.all(controller.check_api_key);
+	// Check authorization for each endpoint
+	app.use(controller.authenticate, controller.handle_auth_error);
 
 	// Authenticate route
 	app.route('/auth/facebook/:id')
@@ -15,7 +17,7 @@ module.exports = function(app) {
 
 	// Get current user route
 	app.route('/auth/me')
-		.get(controller.authenticate, controller.get_current_user, controller.get_one);
+		.get(controller.get_current_user, controller.get_one);
 
 	// Stripe route
 	app.route('/charge')
