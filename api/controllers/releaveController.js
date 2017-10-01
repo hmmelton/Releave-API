@@ -49,10 +49,10 @@ var get_user = function(req, res) {
 	User.findById(req.params.id, function(err, user) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else if (user === null) {
 			// If user is null, send back error to client
-			res.status(404).json({ error: 'User not found' });
+			res.status(404).json("{}");
 		} else {
 			// User was found - return to client
 			res.status(200).send(user);
@@ -66,7 +66,7 @@ var create_user = function(req, res) {
 	newUser.save(function(err, user) {
 		// If there was an error, send it back to the client
 		if (err) {
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else {
 			// User was created - return to client
 			res.status(201).json(user);
@@ -79,7 +79,7 @@ var update_user = function(req, res) {
 	User.findOneAndUpdate({_id: req.params.id }, req.body, { new: true }, function(err, user) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else {
 			// User was updated - return to client
 			res.status(200).json(user);
@@ -93,10 +93,10 @@ var delete_user = function(req, res) {
 	User.findByIdAndRemove(req.params.id, function(err, user) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else if (user === null) {
 			// If user is null, send back error to client
-			res.status(404).json({ error: 'User not found' });
+			res.status(404).json("{}");
 		} else {
 			// User was found and deleted - return to client
 			res.status(200).json({ message: 'User successfully deleted' });
@@ -114,10 +114,10 @@ var get_restroom = function(req, res) {
 	Restroom.findById(req.params.id, function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else if (restroom === null) {
 			// If restroom is null, send back error to client
-			res.status(404).json({ error: 'Restroom not found' });
+			res.status(404).json("{}");
 		} else {
 			// Restroom was found - return to client
 			res.status(200).send(restroom);
@@ -131,7 +131,7 @@ var create_restroom = function(req, res) {
 	new_restroom.save(function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else {
 			// Restroom was created - return to client
 			res.status(201).json(restroom);
@@ -144,7 +144,7 @@ var update_restroom = function(req, res) {
 	Restroom.findOneAndUpdate({_id: req.params.id }, req.body, { new: true }, function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else {
 			// Restroom was updated - return to client
 			res.status(200).json(restroom);
@@ -158,10 +158,10 @@ var delete_restroom = function(req, res) {
 	Restroom.findByIdAndRemove(req.params.id, function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send(err);
+			res.status(500).send("{}");
 		} else if (restroom === null) {
 			// If restroom is null, send back error to client
-			res.status(404).json({ error: 'Restroom not found' });
+			res.status(404).json("{}");
 		} else {
 			// Restroom was found and deleted - return to client
 			res.status(200).json({ message: 'Restroom successfully deleted' });
@@ -173,7 +173,7 @@ var delete_restroom = function(req, res) {
 var get_area_restrooms = function(req, res) {
 	if (!req.query.min_lat || !req.query.max_lat || !req.query.min_lng || !req.query.max_lng) {
 		// Latitudes and longitudes were not all passed - return error
-		res.status(401).json({ error: 'Query parameters min_lat, max_lat, min_lng, and max_lng must all be passed' });
+		res.status(401).json("{}");
 	} else {
 		// Find restrooms in the given latitude and longitude ranges
 		Restroom.find({
@@ -182,7 +182,7 @@ var get_area_restrooms = function(req, res) {
 		}, function(err, restrooms) {
 			if (err) {
 				// If there was an error, return it to the user
-				res.status(500).send(err);
+				res.status(500).send("{}");
 			} else {
 				// Query successful - return restrooms to user
 				res.status(200).json(restrooms);
