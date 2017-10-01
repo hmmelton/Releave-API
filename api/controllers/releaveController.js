@@ -55,6 +55,7 @@ var get_user = function(req, res) {
 			res.status(404).json("{}");
 		} else {
 			// User was found - return to client
+			delete user['__v'];
 			res.status(200).send(user);
 		}
 	});
@@ -69,6 +70,7 @@ var create_user = function(req, res) {
 			res.status(500).send("{}");
 		} else {
 			// User was created - return to client
+			delete user['__v'];
 			res.status(201).json(user);
 		}
 	});
@@ -82,6 +84,7 @@ var update_user = function(req, res) {
 			res.status(500).send("{}");
 		} else {
 			// User was updated - return to client
+			delete user['__v'];
 			res.status(200).json(user);
 		}
 	});
@@ -120,6 +123,7 @@ var get_restroom = function(req, res) {
 			res.status(404).json("{}");
 		} else {
 			// Restroom was found - return to client
+			delete restroom['__v'];
 			res.status(200).send(restroom);
 		}
 	});
@@ -134,6 +138,7 @@ var create_restroom = function(req, res) {
 			res.status(500).send("{}");
 		} else {
 			// Restroom was created - return to client
+			delete restroom['__v'];
 			res.status(201).json(restroom);
 		}
 	});
@@ -147,6 +152,7 @@ var update_restroom = function(req, res) {
 			res.status(500).send("{}");
 		} else {
 			// Restroom was updated - return to client
+			delete restroom['__v'];
 			res.status(200).json(restroom);
 		}
 	});
