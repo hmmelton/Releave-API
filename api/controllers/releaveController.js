@@ -234,7 +234,7 @@ var generate_token = function (req, res, next) {
 
 var send_token = function (req, res) {
   res.setHeader('Authorization', req.token);
-  res.status(200).send(req.auth);
+  res.status(200).send(req.user);
 };
 
 var check_auth = function(req, res, next) {
