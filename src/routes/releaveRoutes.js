@@ -1,7 +1,7 @@
 "use strict";
 module.exports = function(app) {
 	var controller = require('../controllers/releaveController'),
-	strings = require('../../private_strings'),
+	strings = require('../private_strings'),
 	express_jwt = require('express-jwt');
 
 	// Global routes
@@ -10,9 +10,9 @@ module.exports = function(app) {
 
 	// Authenticate route
 	app.route('/auth/facebook/:id')
-		.post(controller.upsert_fb_user, 
-			controller.check_auth, 
-			controller.generate_token, 
+		.post(controller.upsert_fb_user,
+			controller.check_auth,
+			controller.generate_token,
 			controller.send_token);
 
 	// Get current user route

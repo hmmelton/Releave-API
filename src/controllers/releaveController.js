@@ -2,9 +2,9 @@
 var mongoose = require('mongoose'),
 	User = mongoose.model('Users'),
 	Restroom = mongoose.model('Restrooms'),
-	strings = require('../../private_strings'),
+	strings = require('../private_strings'),
 	stripe = require('stripe')(strings.STRIPE_SECRET_KEY),
-	express_jwt = require('express-jwt'),
+	expressJwt = require('express-jwt'),
 	jwt = require('jsonwebtoken');
 
 // This function makes a charge to a card
@@ -202,7 +202,7 @@ var get_area_restrooms = function(req, res) {
  */
 
 // This function verifies an authorization token passed to each request as a header.
-var authenticate = express_jwt({
+var authenticate = expressJwt({
 	secret: strings.TOKEN_GEN_SECRET,
 	requestProperty: 'auth',
 	get_token: function(req) {
@@ -229,7 +229,7 @@ var create_token = function(auth) {
     id: auth.id
   }, strings.TOKEN_GEN_SECRET,
   {
-    expiresIn: 60 * 60 * 24 * 30 * 6 // ~6 month expiration
+    expiresIn: 60 * 60 * 24  // 1 day expiration
   });
 };
 
@@ -260,8 +260,8 @@ var check_auth = function(req, res, next) {
 // This function returns a user, creating a new one if necessary
 var upsert_fb_user = function(req, res, next) {
 	// Find user with matching facbook_id
-	return User.findOne({ 
-		'facebook_id': req.params.id 
+	return User.findOne({
+		'facebook_id': req.params.id
 	}, function(err, user) {
 		if (!user) {
 			// If user is null, create new one
@@ -272,6 +272,7 @@ var upsert_fb_user = function(req, res, next) {
 				if (error) {
 					// Handle error
 					console.log(error);
+					return res.send(err);
 				}
 				req.user = savedUser;
 				return next();
