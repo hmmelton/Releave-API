@@ -19,10 +19,6 @@ module.exports = function(app) {
 	app.route('/auth/me')
 		.get(controller.get_current_user, controller.get_one);
 
-	// Stripe route
-	app.route('/charge')
-		.post(controller.create_charge);
-
 	// User routes
 	app.route('/users/:id')
 		.get(controller.get_user)

@@ -7,38 +7,6 @@ var mongoose = require('mongoose'),
 	expressJwt = require('express-jwt'),
 	jwt = require('jsonwebtoken');
 
-// This function makes a charge to a card
-//
-// TEST FUNCTION
-//
-var create_charge = function(req, res) {
-	if (!req.query.stripe_token) {
-		// Stripe token was not passed - send error to client
-		res.status(400).json({ error: 'Query parameter stripe_token is required' });
-	} else if (!req.query.amount) {
-		// Amount not specified
-		res.status(400).json({ error: 'Query parameter amount is required' });
-	} else {
-		var token = req.query.stripe_token;
-
-		// Charge card
-		stripe.charges.create({
-			amount: req.query.amount,
-			currency: "usd",
-			description: "test charge",
-			source: token
-		}, function(err, charge) {
-			if (err) {
-				// There was an error with the charge
-				res.status(500).send(err);
-			} else {
-				// Charge was completed successfully
-				res.status(200).json(charge);
-			}
-		});
-	}
-};
-
 /*
  * USER FUNCTIONS
  */
