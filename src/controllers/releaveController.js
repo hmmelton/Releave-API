@@ -3,7 +3,6 @@ var mongoose = require('mongoose'),
 	User = mongoose.model('Users'),
 	Restroom = mongoose.model('Restrooms'),
 	strings = require('../private_strings'),
-	stripe = require('stripe')(strings.STRIPE_SECRET_KEY),
 	expressJwt = require('express-jwt'),
 	jwt = require('jsonwebtoken');
 
@@ -274,7 +273,6 @@ var get_one = function (req, res) {
 };
 
 module.exports = {
-	create_charge: create_charge,
 	get_user: get_user,
 	create_user: create_user,
 	update_user: update_user,
