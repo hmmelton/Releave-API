@@ -49,6 +49,9 @@ var update_user = function(req, res) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send("{}");
+		} else if (user === null) {
+			// If user is null, send back error to client
+			res.status(404).json("{}");
 		} else {
 			// User was updated - return to client
 			delete user['__v'];
@@ -117,6 +120,9 @@ var update_restroom = function(req, res) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send("{}");
+		} else if (restroom === null) {
+			// If restroom is null, send back error to client
+			res.status(404).json("{}");
 		} else {
 			// Restroom was updated - return to client
 			delete restroom['__v'];
