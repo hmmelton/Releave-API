@@ -27,14 +27,6 @@ var UserSchema = new Schema({
 	paid: {
 		type: Boolean,
 		default: false
-	},
-	paid_exp: {
-		type: Number,
-		default: 0
-	},
-	stripe_token: {
-		type: String,
-		default: null
 	}
 });
 

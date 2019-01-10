@@ -4,41 +4,8 @@ var mongoose = require('mongoose'),
     User = mongoose.model('Users'),
     Restroom = mongoose.model('Restrooms'),
     strings = require('../private_strings'),
-    stripe = require('stripe')(strings.STRIPE_SECRET_KEY),
-    express_jwt = require('express-jwt'),
+    expressJwt = require('express-jwt'),
     jwt = require('jsonwebtoken');
-
-// This function makes a charge to a card
-//
-// TEST FUNCTION
-//
-var create_charge = function create_charge(req, res) {
-	if (!req.query.stripe_token) {
-		// Stripe token was not passed - send error to client
-		res.status(400).json({ error: 'Query parameter stripe_token is required' });
-	} else if (!req.query.amount) {
-		// Amount not specified
-		res.status(400).json({ error: 'Query parameter amount is required' });
-	} else {
-		var token = req.query.stripe_token;
-
-		// Charge card
-		stripe.charges.create({
-			amount: req.query.amount,
-			currency: "usd",
-			description: "test charge",
-			source: token
-		}, function (err, charge) {
-			if (err) {
-				// There was an error with the charge
-				res.status(500).send(err);
-			} else {
-				// Charge was completed successfully
-				res.status(200).json(charge);
-			}
-		});
-	}
-};
 
 /*
  * USER FUNCTIONS
@@ -83,6 +50,9 @@ var update_user = function update_user(req, res) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send("{}");
+		} else if (user === null) {
+			// If user is null, send back error to client
+			res.status(404).json("{}");
 		} else {
 			// User was updated - return to client
 			delete user['__v'];
@@ -151,6 +121,9 @@ var update_restroom = function update_restroom(req, res) {
 		if (err) {
 			// If there was an error, send it back to the client
 			res.status(500).send("{}");
+		} else if (restroom === null) {
+			// If restroom is null, send back error to client
+			res.status(404).json("{}");
 		} else {
 			// Restroom was updated - return to client
 			delete restroom['__v'];
@@ -203,7 +176,7 @@ var get_area_restrooms = function get_area_restrooms(req, res) {
  */
 
 // This function verifies an authorization token passed to each request as a header.
-var authenticate = express_jwt({
+var authenticate = expressJwt({
 	secret: strings.TOKEN_GEN_SECRET,
 	requestProperty: 'auth',
 	get_token: function get_token(req) {
@@ -272,6 +245,7 @@ var upsert_fb_user = function upsert_fb_user(req, res, next) {
 				if (error) {
 					// Handle error
 					console.log(error);
+					return res.send(err);
 				}
 				req.user = savedUser;
 				return next();
@@ -305,7 +279,6 @@ var get_one = function get_one(req, res) {
 };
 
 module.exports = {
-	create_charge: create_charge,
 	get_user: get_user,
 	create_user: create_user,
 	update_user: update_user,

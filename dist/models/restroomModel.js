@@ -4,11 +4,19 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var RestroomSchema = new Schema({
-	created_date: {
+	created_when: {
 		type: Date,
 		default: Date.now
 	},
-	user_id: {
+	created_by: {
+		type: String,
+		default: null
+	},
+	udpated_when: {
+		type: Date,
+		default: Date.now
+	},
+	updated_by: {
 		type: String,
 		default: null
 	},
@@ -24,13 +32,13 @@ var RestroomSchema = new Schema({
 		type: String,
 		default: null
 	},
-	free: {
+	location: {
+		type: String,
+		default: null
+	},
+	is_locked: {
 		type: Boolean,
 		default: true
-	},
-	verified: {
-		type: Boolean,
-		default: false
 	},
 	rating: {
 		type: Number,
@@ -39,10 +47,6 @@ var RestroomSchema = new Schema({
 	num_ratings: {
 		type: Number,
 		default: 0
-	},
-	rating_comment: {
-		type: String,
-		default: null
 	}
 });
 
