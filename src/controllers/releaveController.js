@@ -186,7 +186,7 @@ var authenticate = expressJwt({
 		// Token is not valid
 		return null;
 	}
-}).unless({ path: [/^\/api\/v1\/auth\/facebook\/.*/] }); // Login endpoint is only that does not not require an auth token
+}).unless({ path: [/^\/api\/v1\/auth\/facebook/] }); // Login endpoint is only that does not not require an auth token
 
 // If there was an error with the auth token, send it back to the client.
 var handle_auth_error = function(err, req, res, next) {
@@ -213,7 +213,7 @@ var generate_token = function (req, res, next) {
 
 var send_token = function (req, res) {
   res.setHeader('Authorization', req.token);
-  res.status(200).send(req.user);
+  res.status(req.status).send(req.user);
 };
 
 var check_auth = function(req, res, next) {
@@ -234,7 +234,7 @@ var check_auth = function(req, res, next) {
 var upsert_fb_user = function(req, res, next) {
 	// Find user with matching facbook_id
 	return User.findOne({
-		'facebook_id': req.params.id
+		'email': req.body.email
 	}, function(err, user) {
 		if (!user) {
 			// If user is null, create new one
@@ -250,12 +250,15 @@ var upsert_fb_user = function(req, res, next) {
 				}
 
 				req.user = savedUser;
+				req.status = 201
+
 				return next();
 			});
 		} else if (!err) {
 
 			// If user was found, return data
 			req.user = user;
+			req.status = 200
 
 			// Move on
 			return next();
