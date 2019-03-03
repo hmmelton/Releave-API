@@ -3,9 +3,6 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	id: {
-		type: String
-	},
 	created_when: {
 		type: String,
 		default: Date.now
