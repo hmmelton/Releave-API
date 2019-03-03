@@ -186,7 +186,7 @@ var authenticate = expressJwt({
 		// Token is not valid
 		return null;
 	}
-}).unless({ path: [/^\/auth\/facebook\/.*/] }); // Login endpoint is only that does not not require an auth token
+}).unless({ path: [/^\/api\/v1\/auth\/facebook\/.*/] }); // Login endpoint is only that does not not require an auth token
 
 // If there was an error with the auth token, send it back to the client.
 var handle_auth_error = function(err, req, res, next) {
