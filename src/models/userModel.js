@@ -3,14 +3,14 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-	created_date: {
-		type: Date,
+	id: {
+		type: String
+	},
+	created_when: {
+		type: String,
 		default: Date.now
 	},
 	facebook_id: {
-		type: String
-	},
-	auth_token: {
 		type: String
 	},
 	first_name: {

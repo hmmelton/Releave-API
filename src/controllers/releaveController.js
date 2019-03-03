@@ -238,6 +238,7 @@ var upsert_fb_user = function(req, res, next) {
 	}, function(err, user) {
 		if (!user) {
 			// If user is null, create new one
+			req.body.created_when = Date.now()
 			var newUser = new User(req.body);
 
 			// Save new user
@@ -247,12 +248,15 @@ var upsert_fb_user = function(req, res, next) {
 					console.log(error);
 					return res.send(err);
 				}
+
 				req.user = savedUser;
 				return next();
 			});
 		} else if (!err) {
+
 			// If user was found, return data
 			req.user = user;
+
 			// Move on
 			return next();
 		}
