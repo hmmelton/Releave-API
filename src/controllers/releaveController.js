@@ -243,9 +243,7 @@ var check_facebook_token = function(req, res, next) {
 	}
 
 	// Verify that Facebook token came from Releave
-	https.get(`https://graph.facebook.com/debug_token?
-		input_token=${facebook_token}
-		&access_token=${strings.FACEBOOK_APP_ACCESS_TOKEN}`, (resp) => {
+	https.get(`https://graph.facebook.com/debug_token?input_token=${facebook_token}&access_token=${strings.FACEBOOK_APP_ACCESS_TOKEN}`, (resp) => {
 
 		let data = '';
 
