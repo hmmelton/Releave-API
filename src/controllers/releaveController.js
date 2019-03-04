@@ -254,6 +254,7 @@ var check_facebook_token = function(req, res, next) {
 		});
 
 		resp.on('end', () => {
+			console.log(JSON.parse(data));
 			let validToken = JSON.parse(data).data.is_valid;
 
 			if (validToken) {
