@@ -8,14 +8,17 @@ var UserSchema = new Schema({
 		default: Date.now
 	},
 	first_name: {
-		type: String,
+		type: String
 	},
 	last_name: {
 		type: String,
 		default: null
 	},
 	email: {
-		type: String,
+		type: String
+	},
+	facebook_id: {
+		type: String
 	},
 	paid: {
 		type: Boolean,

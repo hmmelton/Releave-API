@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 	Restroom = mongoose.model('Restrooms'),
 	strings = require('../private_strings'),
 	expressJwt = require('express-jwt'),
+	https = require('https'),
 	jwt = require('jsonwebtoken');
 
 /*
@@ -19,7 +20,7 @@ var get_user = function(req, res) {
 			res.status(500).send("{}");
 		} else if (user === null) {
 			// If user is null, send back error to client
-			res.status(404).json("{}");
+			res.status(404).send("{}");
 		} else {
 			// User was found - return to client
 			delete user['__v'];
@@ -230,11 +231,47 @@ var check_auth = function(req, res, next) {
 	next();
 };
 
+var check_facebook_token = function(req, res, next) {
+	let facebook_id = req.body.facebook_id;
+	let facebook_token = req.get('FacebookAuth')
+
+	if (facebook_id == null) {
+		return res.status(400).json({"error": "facebook_id not provided in body"})
+	}
+	if (facebook_token == null) {
+		return res.status(400).json({"error": "FacebookAuth header not provided"})
+	}
+
+	// Verify that Facebook token came from Releave
+	https.get(`https://graph.facebook.com/debug_token?
+		input_token=${facebook_token}
+		&access_token=${strings.FACEBOOK_APP_ACCESS_TOKEN}`, (resp) => {
+
+		let data = '';
+
+		resp.on('data', (chunk) => {
+			data += chunk;
+		});
+
+		resp.on('end', () => {
+			let validToken = JSON.parse(data).data.is_valid;
+
+			if (validToken) {
+				return next();
+			} else {
+				return res.status(403).send({"error": "Facebook token invalid"});
+			}
+		});
+	}).on('error', (err) => {
+		return next(err);
+	});
+}
+
 // This function returns a user, creating a new one if necessary
 var upsert_fb_user = function(req, res, next) {
 	// Find user with matching facbook_id
 	return User.findOne({
-		'email': req.body.email
+		'facebook_id': req.body.facebook_id
 	}, function(err, user) {
 		if (!user) {
 			// If user is null, create new one
@@ -302,6 +339,7 @@ module.exports = {
 	generate_token: generate_token,
 	send_token: send_token,
 	check_auth: check_auth,
+	check_facebook_token: check_facebook_token,
 	get_current_user: get_current_user,
 	get_one: get_one
 };
