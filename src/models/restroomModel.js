@@ -39,6 +39,10 @@ var RestroomSchema = new Schema({
 		type: Boolean,
 		default: true
 	},
+	is_single_occupancy: {
+		type: Boolean,
+		default: false
+	},
 	rating: {
 		type: Number,
 		default: 0
