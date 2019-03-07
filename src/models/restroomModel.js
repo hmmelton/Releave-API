@@ -5,14 +5,17 @@ var Schema = mongoose.Schema;
 var RestroomSchema = new Schema({
 	created_when: {
 		type: Date,
+		required: true,
 		default: Date.now
 	},
 	created_by: {
 		type: String,
+		required: true,
 		default: null
 	},
-	udpated_when: {
+	updated_when: {
 		type: Date,
+		required: true,
 		default: Date.now
 	},
 	updated_by: {
@@ -21,22 +24,23 @@ var RestroomSchema = new Schema({
 	},
 	lat: {
 		type: Number,
-		default: null
+		required: true
 	},
 	lng: {
 		type: Number,
-		default: null
+		required: true
 	},
 	name: {
 		type: String,
-		default: null
+		required: true,
 	},
 	location: {
 		type: String,
-		default: null
+		required: true
 	},
 	is_locked: {
 		type: Boolean,
+		required: true,
 		default: true
 	},
 	is_single_occupancy: {
@@ -45,12 +49,23 @@ var RestroomSchema = new Schema({
 	},
 	rating: {
 		type: Number,
+		required: true,
 		default: 0
 	},
 	num_ratings: {
 		type: Number,
+		required: true,
 		default: 0
 	}
+});
+RestroomSchema.pre('save', function (next) {
+	this.updated_by = this.get("created_by");
+	next();
+});
+RestroomSchema.pre('findOneAndUpdate', function (next) {
+	let doc = this.getUpdate();
+	doc.updated_when = Date.now();
+	next();
 });
 
 module.exports = mongoose.model('Restrooms', RestroomSchema);

@@ -6,7 +6,7 @@ module.exports = function(app) {
 
 	// Global routes
 	// Check authorization for each endpoint
-	app.use('/api/v1', controller.authenticate, controller.handle_auth_error);
+	//app.use('/api/v1', controller.authenticate, controller.handle_auth_error);
 
 	// Authenticate route
 	app.route('/api/v1/auth/facebook')
@@ -23,7 +23,7 @@ module.exports = function(app) {
 	// User routes
 	app.route('/api/v1/users/:id')
 		.get(controller.get_user)
-		.put(controller.update_user)
+		.patch(controller.update_user)
 		.delete(controller.delete_user);
 
 	app.route('/api/v1/users')
@@ -32,7 +32,7 @@ module.exports = function(app) {
 	// Restroom routes
 	app.route('/api/v1/restrooms/:id')
 		.get(controller.get_restroom)
-		.put(controller.update_restroom)
+		.patch(controller.update_restroom)
 		.delete(controller.delete_restroom);
 
 	app.route('/api/v1/restrooms')

@@ -106,7 +106,7 @@ var create_restroom = function(req, res) {
 	new_restroom.save(function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send("{}");
+			res.status(500).send(err);
 		} else {
 			// Restroom was created - return to client
 			delete restroom['__v'];
@@ -120,7 +120,7 @@ var update_restroom = function(req, res) {
 	Restroom.findOneAndUpdate({_id: req.params.id }, req.body, { new: true }, function(err, restroom) {
 		if (err) {
 			// If there was an error, send it back to the client
-			res.status(500).send("{}");
+			res.status(500).send(err);
 		} else if (restroom === null) {
 			// If restroom is null, send back error to client
 			res.status(404).json("{}");
