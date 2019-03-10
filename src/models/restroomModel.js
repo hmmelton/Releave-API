@@ -50,12 +50,12 @@ var RestroomSchema = new Schema({
 	rating: {
 		type: Number,
 		required: true,
-		default: 0
+		default: 1
 	},
 	num_ratings: {
 		type: Number,
 		required: true,
-		default: 0
+		default: 1
 	}
 });
 RestroomSchema.pre('save', function (next) {
