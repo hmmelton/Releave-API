@@ -7,6 +7,10 @@ var UserSchema = new Schema({
 		type: String,
 		default: Date.now
 	},
+	updated_when: {
+		type: String,
+		default: Date.now
+	},
 	first_name: {
 		type: String
 	},
@@ -24,6 +28,11 @@ var UserSchema = new Schema({
 		type: Boolean,
 		default: false
 	}
+});
+UserSchema.pre('findOneAndUpdate', function (next) {
+	let doc = this.getUpdate();
+	doc.updated_when = Date.now();
+	next();
 });
 
 module.exports = mongoose.model('Users', UserSchema);
