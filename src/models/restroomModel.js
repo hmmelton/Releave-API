@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var RestroomSchema = new Schema({
 	created_when: {
-		type: Date,
+		type: Number,
 		required: true,
 		default: Date.now
 	},
@@ -14,12 +14,13 @@ var RestroomSchema = new Schema({
 		default: null
 	},
 	updated_when: {
-		type: Date,
+		type: Number,
 		required: true,
 		default: Date.now
 	},
 	updated_by: {
 		type: String,
+		required: true,
 		default: null
 	},
 	lat: {
@@ -32,7 +33,7 @@ var RestroomSchema = new Schema({
 	},
 	name: {
 		type: String,
-		required: true,
+		required: true
 	},
 	location: {
 		type: String,
@@ -45,6 +46,7 @@ var RestroomSchema = new Schema({
 	},
 	is_single_occupancy: {
 		type: Boolean,
+		required: true,
 		default: false
 	},
 	rating: {

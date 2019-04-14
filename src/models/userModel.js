@@ -4,28 +4,35 @@ var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
 	created_when: {
-		type: String,
+		type: Number,
+		required: true,
 		default: Date.now
 	},
 	updated_when: {
-		type: String,
+		type: Number,
+		required: true,
 		default: Date.now
 	},
 	first_name: {
-		type: String
+		type: String,
+		required: true,
+		default: null
 	},
 	last_name: {
 		type: String,
 		default: null
 	},
 	email: {
-		type: String
+		type: String,
+		required: true,
 	},
 	facebook_id: {
-		type: String
+		type: String,
+		required: true,
 	},
 	paid: {
 		type: Boolean,
+		required: true,
 		default: false
 	}
 });
