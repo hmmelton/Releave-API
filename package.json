@@ -42,7 +42,7 @@
     "babel-eslint": "^8.2.6",
     "eslint": "^4.19.1",
     "nodemon": "^1.18.9",
-    "lodash": ">=4.17.13",
+    "lodash": ">=4.17.19",
     "randomatic": ">=3.0.0",
     "debug": ">=2.6.9"
   },
